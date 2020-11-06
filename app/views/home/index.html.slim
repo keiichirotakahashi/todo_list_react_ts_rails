@@ -3,5 +3,8 @@
     h1.top__heading
       | ToDoリスト
     .top-links
-      = link_to 'サインアップ', '#', class: 'top-links__signup'
-      = link_to 'ログイン', '#', class: 'top-links__login'
+      - if user_signed_in?
+        = link_to 'プロジェクト一覧へ', '#', class: 'top-links__app'
+      - else
+        = link_to 'サインアップ', signup_path, class: 'top-links__signup'
+        = link_to 'ログイン', login_path, class: 'top-links__login'

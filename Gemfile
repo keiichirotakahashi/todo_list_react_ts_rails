@@ -17,6 +17,7 @@ gem 'puma', '~> 4.1'
 
 # view
 gem 'sass-rails', '>= 6'
+gem 'slim'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 4.0'
 

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 
-const App = () => (
+const App: FC = () => (
   <div>Hello React!</div>
 );
 

@@ -19,5 +19,7 @@
 #  index_users_on_email  (email) UNIQUE
 #
 class User < ApplicationRecord
+  has_many :projects, dependent: :destroy
+
   devise :database_authenticatable, :registerable, :rememberable, :validatable, :trackable
 end

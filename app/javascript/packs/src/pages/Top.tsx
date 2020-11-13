@@ -1,10 +1,32 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Header } from '../organisms/Header';
 import { Footer } from '../organisms/Footer';
+import { ProjectCard } from '../molecules/ProjectCard';
 import { H1 } from '../atoms/Heading';
 import styled from 'styled-components';
 
 export const Top: FC = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    let unmounted = false;
+    const getProjects = async () => {
+      try {
+        const response = await fetch('/api/v1/projects');
+        const json = await response.json();
+        if (!unmounted) setProjects(json);
+      } catch(error) {
+        console.log('hoge');
+      }
+    };
+    getProjects();
+    const cleanup = () => {
+      unmounted = true;
+    };
+
+    return cleanup;
+  }, []);
+
   return (
     <>
       <Header />
@@ -16,6 +38,11 @@ export const Top: FC = () => {
             </H1>
           </StyldHeadingWrapper>
           <StyldProjectCardsWrapper>
+            {projects.length > 0 ? (
+              projects.map(project => (
+                <ProjectCard projectData={project} key={project.id} />
+              ))
+            ) : null}
           </StyldProjectCardsWrapper>
         </Content>
       </Wrapper>

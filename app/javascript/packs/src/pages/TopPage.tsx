@@ -5,24 +5,24 @@ import { ProjectCard } from '../molecules/ProjectCard';
 import { H1 } from '../atoms/Heading';
 import styled from 'styled-components';
 
-export const Top: FC = () => {
+export const TopPage: FC = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     let unmounted = false;
+
     const getProjects = async () => {
       try {
         const response = await fetch('/api/v1/projects');
         const json = await response.json();
         if (!unmounted) setProjects(json);
       } catch(error) {
-        console.log('hoge');
+        console.log('error');
       }
     };
     getProjects();
-    const cleanup = () => {
-      unmounted = true;
-    };
+
+    const cleanup = () => { unmounted = true };
 
     return cleanup;
   }, []);

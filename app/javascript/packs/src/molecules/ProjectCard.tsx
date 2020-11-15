@@ -21,7 +21,7 @@ export const ProjectCard: FC<ProjectCardProps> = props => {
 
   return (
     <Wrapper>
-      <StyledLink to={`/projects/${url}`}>
+      <StyledLink to={`/app/projects/${url}`}>
         <H2>{name}</H2>
       </StyledLink>
       <MoreWrapper>

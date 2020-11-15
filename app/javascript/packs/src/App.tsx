@@ -1,14 +1,18 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Top } from './pages/Top';
+import { TopPage } from './pages/TopPage';
+import { ProjectPage } from './pages/ProjectPage';
 
 const App: FC = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/app">
-          <Top />
+          <TopPage />
+        </Route>
+        <Route exact path="/app/projects/:url">
+          <ProjectPage />
         </Route>
       </Switch>
     </Router>

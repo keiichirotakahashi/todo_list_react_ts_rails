@@ -4,7 +4,7 @@ import { H2 } from '../atoms/Heading';
 import { More } from '../molecules/More';
 import styled from 'styled-components';
 
-interface Project {
+export interface ProjectType {
   id: number;
   name: string;
   url: string;
@@ -13,7 +13,7 @@ interface Project {
 }
 
 interface ProjectCardProps {
-  projectData: Project;
+  projectData: ProjectType;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = props => {

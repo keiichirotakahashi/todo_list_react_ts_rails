@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ProjectType, ProjectCard } from '../molecules/ProjectCard';
+import { ProjectNewCard } from '../molecules/ProjectNewCard';
 import { H1 } from '../atoms/Heading';
 import styled from 'styled-components';
 
@@ -18,6 +19,7 @@ export const Projects: FC<ProjectsProps> = props => {
         </H1>
       </StyldHeadingWrapper>
       <StyldProjectCardsWrapper>
+        <ProjectNewCard />
         {projects.length > 0 ? (
           projects.map(project => (
             <ProjectCard projectData={project} key={project.id} />

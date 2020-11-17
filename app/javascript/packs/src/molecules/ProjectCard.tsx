@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { Card } from '../atoms/Card';
 import { H2 } from '../atoms/Heading';
 import { More } from '../molecules/More';
 import styled from 'styled-components';
@@ -20,36 +21,16 @@ export const ProjectCard: FC<ProjectCardProps> = props => {
   const { name, url } = props.projectData;
 
   return (
-    <Wrapper>
+    <Card>
       <StyledLink to={`/app/projects/${url}`}>
         <H2>{name}</H2>
       </StyledLink>
       <MoreWrapper>
         <More />
       </MoreWrapper>
-    </Wrapper>
+    </Card>
   );
 };
-
-const Wrapper = styled.div`
-  position: relative;
-  background: #fff;
-  width: 160px;
-  height: 160px;
-  border-radius: 30px;
-  margin: 0 15px 30px;
-  cursor: pointer;
-  &:hover {
-    background: #fafafa;
-  }
-  @media screen and (max-width: 767px) {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 0 0 20px;
-  }
-`;
 
 const StyledLink = styled(Link)`
   display: flex;

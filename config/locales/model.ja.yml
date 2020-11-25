@@ -14,6 +14,7 @@ ja:
         id: ID
         user: ユーザー
         name: プロジェクト名
+        url: URL
         created_at: 作成日時
         updated_at: 更新日時
       task:

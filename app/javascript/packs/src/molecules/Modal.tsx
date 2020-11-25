@@ -4,16 +4,20 @@ import { Close } from '../molecules/Close';
 import styled from 'styled-components';
 
 interface ModalProps {
+  children: React.ReactNode;
   handleClickModalClose: () => void;
 }
 
 export const Modal: FC<ModalProps> = props => {
+  const { children } = props;
+
   return(
     <ModalBg>
       <CloseWrapper>
         <Close handleClickModalClose={props.handleClickModalClose} />
       </CloseWrapper>
       <ModalContent>
+        {children}
       </ModalContent>
     </ModalBg>
   );

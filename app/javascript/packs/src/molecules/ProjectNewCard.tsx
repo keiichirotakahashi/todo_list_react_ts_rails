@@ -1,10 +1,19 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, ChangeEvent, FormEvent } from 'react';
 import { Card } from '../atoms/Card';
 import { H2 } from '../atoms/Heading';
 import { Modal } from '../molecules/Modal';
+import { ProjectForm } from '../molecules/ProjectForm';
+import { ProjectFormDataType } from '../pages/TopPage';
 import styled from 'styled-components';
 
-export const ProjectNewCard: FC = () => {
+interface ProjectNewCardProps {
+  projectFormData: ProjectFormDataType;
+  handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+}
+
+export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
+  const { projectFormData, handleProjectFormChange, handleProjectFormSubmit } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClickNew = () => {
@@ -20,7 +29,16 @@ export const ProjectNewCard: FC = () => {
       <Content onClick={() => {handleClickNew()}}>
         <H2>新規作成</H2>
       </Content>
-      {isModalOpen ? <Modal handleClickModalClose={handleClickModalClose} /> : null}
+      {isModalOpen ? (
+        <Modal handleClickModalClose={handleClickModalClose}>
+          <ProjectForm
+            formName='プロジェクトを新規作成する'
+            buttonText='作成'
+            projectFormData={projectFormData}
+            handleProjectFormChange={handleProjectFormChange}
+            handleProjectFormSubmit={handleProjectFormSubmit} />
+        </Modal>
+      ) : null}
     </Card>
   );
 };

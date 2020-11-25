@@ -1,17 +1,10 @@
 import React, { FC } from 'react';
+import { ProjectType } from '../pages/TopPage';
 import { Link } from 'react-router-dom';
 import { Card } from '../atoms/Card';
 import { H2 } from '../atoms/Heading';
 import { More } from '../molecules/More';
 import styled from 'styled-components';
-
-export interface ProjectType {
-  id: number;
-  name: string;
-  url: string;
-  created_at: Date;
-  updated_at: Date;
-}
 
 interface ProjectCardProps {
   projectData: ProjectType;

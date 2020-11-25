@@ -1,15 +1,20 @@
-import React, { FC } from 'react';
-import { ProjectType, ProjectCard } from '../molecules/ProjectCard';
+import React, { FC, ChangeEvent, FormEvent } from 'react';
+import { ProjectType } from '../pages/TopPage';
+import { ProjectFormDataType } from '../pages/TopPage';
+import { ProjectCard } from '../molecules/ProjectCard';
 import { ProjectNewCard } from '../molecules/ProjectNewCard';
 import { H1 } from '../atoms/Heading';
 import styled from 'styled-components';
 
 interface ProjectsProps {
   projects: ProjectType[];
+  projectFormData: ProjectFormDataType;
+  handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
 }
 
 export const Projects: FC<ProjectsProps> = props => {
-  const { projects } = props;
+  const { projects, projectFormData, handleProjectFormChange, handleProjectFormSubmit } = props;
 
   return (
     <>
@@ -19,7 +24,10 @@ export const Projects: FC<ProjectsProps> = props => {
         </H1>
       </StyldHeadingWrapper>
       <StyldProjectCardsWrapper>
-        <ProjectNewCard />
+        <ProjectNewCard
+          projectFormData={projectFormData}
+          handleProjectFormChange={handleProjectFormChange}
+          handleProjectFormSubmit={handleProjectFormSubmit} />
         {projects.length > 0 ? (
           projects.map(project => (
             <ProjectCard projectData={project} key={project.id} />

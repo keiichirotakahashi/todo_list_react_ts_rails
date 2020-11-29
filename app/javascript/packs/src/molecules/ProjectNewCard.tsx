@@ -8,12 +8,22 @@ import styled from 'styled-components';
 
 interface ProjectNewCardProps {
   projectFormData: ProjectFormDataType;
+  formErrors: string[];
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  resetProjectFormData: () => void;
+  removeFormErrors: () => void;
 }
 
 export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
-  const { projectFormData, handleProjectFormChange, handleProjectFormSubmit } = props;
+  const {
+    projectFormData,
+    formErrors,
+    handleProjectFormChange,
+    handleProjectFormSubmit,
+    resetProjectFormData,
+    removeFormErrors,
+  } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClickNew = () => {
@@ -22,6 +32,8 @@ export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
 
   const handleClickModalClose = () => {
     setIsModalOpen(false);
+    resetProjectFormData();
+    removeFormErrors();
   };
 
   return (
@@ -35,6 +47,7 @@ export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
             formName='プロジェクトを新規作成する'
             buttonText='作成'
             projectFormData={projectFormData}
+            formErrors={formErrors}
             handleProjectFormChange={handleProjectFormChange}
             handleProjectFormSubmit={handleProjectFormSubmit} />
         </Modal>

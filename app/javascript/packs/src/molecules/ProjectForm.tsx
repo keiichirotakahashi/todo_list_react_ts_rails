@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent, FormEvent } from 'react';
 import { Txt } from '../atoms/Txt';
+import { FormErrors } from '../molecules/FormErrors';
 import { Form } from '../atoms/Form';
 import { FormItem } from '../molecules/FormItem';
 import { Btn } from '../atoms/Btn';
@@ -10,12 +11,20 @@ interface ProjectFormProps {
   formName: string;
   buttonText: string;
   projectFormData: ProjectFormDataType;
+  formErrors: string[];
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
 }
 
 export const ProjectForm: FC<ProjectFormProps> = props => {
-  const { formName, buttonText, projectFormData, handleProjectFormChange, handleProjectFormSubmit } = props;
+  const {
+    formName,
+    buttonText,
+    projectFormData,
+    formErrors,
+    handleProjectFormChange,
+    handleProjectFormSubmit
+  } = props;
   const { name, url } = projectFormData;
 
   return (
@@ -23,6 +32,7 @@ export const ProjectForm: FC<ProjectFormProps> = props => {
       <StyledTxt>
         {formName}
       </StyledTxt>
+      <FormErrors formErrors={formErrors} />
       <Form handleProjectFormSubmit={handleProjectFormSubmit}>
         <FormContent>
           <FormItemWrapper>

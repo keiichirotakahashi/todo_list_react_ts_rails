@@ -19,8 +19,13 @@ export interface ProjectFormDataType {
 
 export const TopPage: FC = () => {
   const [projects, setProjects] = useState<ProjectType[]>([]);
+
   const initialProjectFormData: ProjectFormDataType = { name: '', url: '' };
   const [projectFormData, setProjectFormData] = useState<ProjectFormDataType>(initialProjectFormData);
+
+  const initialFormErrors: string[] = [];
+  const [formErrors, setFormErrors] = useState<string[]>(initialFormErrors);
+
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   useEffect(() => {
@@ -74,10 +79,18 @@ export const TopPage: FC = () => {
       }
 
       const errorMessages = await response.json();
-      console.log(errorMessages);
+      setFormErrors(errorMessages);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const resetProjectFormData = () => {
+    setProjectFormData(initialProjectFormData);
+  };
+
+  const removeFormErrors = () => {
+    setFormErrors(initialFormErrors);
   };
 
   return (
@@ -88,8 +101,11 @@ export const TopPage: FC = () => {
           <Projects
             projects={projects}
             projectFormData={projectFormData}
+            formErrors={formErrors}
             handleProjectFormChange={handleProjectFormChange}
-            handleProjectFormSubmit={handleProjectFormSubmit} />
+            handleProjectFormSubmit={handleProjectFormSubmit}
+            resetProjectFormData={resetProjectFormData}
+            removeFormErrors={removeFormErrors} />
         </Content>
       </Wrapper>
       <Footer />

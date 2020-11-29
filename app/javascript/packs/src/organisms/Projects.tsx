@@ -9,12 +9,23 @@ import styled from 'styled-components';
 interface ProjectsProps {
   projects: ProjectType[];
   projectFormData: ProjectFormDataType;
+  formErrors: string[];
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  resetProjectFormData: () => void;
+  removeFormErrors: () => void;
 }
 
 export const Projects: FC<ProjectsProps> = props => {
-  const { projects, projectFormData, handleProjectFormChange, handleProjectFormSubmit } = props;
+  const {
+    projects,
+    projectFormData,
+    formErrors,
+    handleProjectFormChange,
+    handleProjectFormSubmit,
+    resetProjectFormData,
+    removeFormErrors,
+  } = props;
 
   return (
     <>
@@ -26,8 +37,11 @@ export const Projects: FC<ProjectsProps> = props => {
       <StyldProjectCardsWrapper>
         <ProjectNewCard
           projectFormData={projectFormData}
+          formErrors={formErrors}
           handleProjectFormChange={handleProjectFormChange}
-          handleProjectFormSubmit={handleProjectFormSubmit} />
+          handleProjectFormSubmit={handleProjectFormSubmit}
+          resetProjectFormData={resetProjectFormData}
+          removeFormErrors={removeFormErrors} />
         {projects.length > 0 ? (
           projects.map(project => (
             <ProjectCard projectData={project} key={project.id} />

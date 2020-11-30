@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { FlashType } from '../App';
 import { Header } from '../organisms/Header';
 import { Footer } from '../organisms/Footer';
+import { Flash } from '../molecules/Flash';
 import { Projects } from '../organisms/Projects';
 import styled from 'styled-components';
 
@@ -17,7 +19,15 @@ export interface ProjectFormDataType {
   url: string;
 }
 
-export const TopPage: FC = () => {
+interface TopPageProps {
+  flash: FlashType;
+  showNoticeFlash: (message: string) => void;
+  showErrorFlash: (message?: string) => void;
+  removeFlashNow: () => void;
+}
+
+export const TopPage: FC<TopPageProps> = props => {
+  const { flash, showNoticeFlash, showErrorFlash, removeFlashNow } = props;
   const [projects, setProjects] = useState<ProjectType[]>([]);
 
   const initialProjectFormData: ProjectFormDataType = { name: '', url: '' };
@@ -37,7 +47,7 @@ export const TopPage: FC = () => {
         const json = await response.json();
         if (!unmounted) setProjects(json);
       } catch(error) {
-        console.log('error');
+        showErrorFlash();
       }
     };
     getProjects();
@@ -54,6 +64,8 @@ export const TopPage: FC = () => {
 
   const handleProjectFormSubmit = (event: FormEvent, id?: number) => {
     event.preventDefault();
+    setFormErrors(initialFormErrors);
+    removeFlashNow();
     if (id) return;
     postProject();
   };
@@ -74,14 +86,16 @@ export const TopPage: FC = () => {
         projects.unshift(newProject);
         setProjects(projects);
         setProjectFormData(initialProjectFormData);
+        showNoticeFlash('プロジェクトを作成しました。');
 
         return;
       }
 
       const errorMessages = await response.json();
       setFormErrors(errorMessages);
+      showErrorFlash('プロジェクトの作成に失敗しました。');
     } catch (error) {
-      console.log(error);
+      showErrorFlash();
     }
   };
 
@@ -97,6 +111,9 @@ export const TopPage: FC = () => {
     <>
       <Header />
       <Wrapper>
+        <Flash isVisible={flash.isVisible} status={flash.status}>
+          {flash.message}
+        </Flash>
         <Content>
           <Projects
             projects={projects}

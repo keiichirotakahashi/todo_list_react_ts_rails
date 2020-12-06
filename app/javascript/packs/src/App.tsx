@@ -66,7 +66,9 @@ const App: FC = () => {
             removeFlashNow={removeFlashNow} />
         </Route>
         <Route exact path="/app/projects/:url">
-          <ProjectPage />
+          <ProjectPage
+            flash={flash}
+            showErrorFlash={showErrorFlash} />
         </Route>
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
 class Api::V1::ProjectsController < Api::V1::BaseController
-  before_action :set_project, only: %i[show update destroy]
+  before_action :set_project, only: %i[update destroy]
 
   def index
     projects = current_user.projects.order(created_at: :desc)
@@ -7,6 +7,10 @@ class Api::V1::ProjectsController < Api::V1::BaseController
   end
 
   def show
+    @project = Project.find_by!(url: params[:url])
+    unless @project.user_id == current_user.id
+      render json: 'Forbidden request', status: :forbidden and return
+    end
     render json: @project, status: :ok
   end
 
@@ -35,7 +39,7 @@ class Api::V1::ProjectsController < Api::V1::BaseController
   private
 
   def set_project
-    @project = Project.find_by!(url: params[:url])
+    @project = Project.find(params[:id])
     unless @project.user_id == current_user.id
       render json: 'Forbidden request', status: :forbidden and return
     end

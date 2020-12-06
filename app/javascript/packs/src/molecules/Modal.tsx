@@ -9,12 +9,12 @@ interface ModalProps {
 }
 
 export const Modal: FC<ModalProps> = props => {
-  const { children } = props;
+  const { children, handleClickModalClose } = props;
 
   return(
     <ModalBg>
       <CloseWrapper>
-        <Close handleClickModalClose={props.handleClickModalClose} />
+        <Close handleClickModalClose={handleClickModalClose} />
       </CloseWrapper>
       <ModalContent>
         {children}

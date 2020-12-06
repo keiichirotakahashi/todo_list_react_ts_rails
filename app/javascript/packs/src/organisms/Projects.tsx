@@ -10,10 +10,12 @@ interface ProjectsProps {
   projects: ProjectType[];
   projectFormData: ProjectFormDataType;
   formErrors: string[];
+  buildProjectFormData: (url: string) => void;
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  handleProjectFormSubmit: (id?: number) => (event: FormEvent) => void;
   resetProjectFormData: () => void;
   removeFormErrors: () => void;
+  removeProject: (id: number) => void;
 }
 
 export const Projects: FC<ProjectsProps> = props => {
@@ -21,10 +23,12 @@ export const Projects: FC<ProjectsProps> = props => {
     projects,
     projectFormData,
     formErrors,
+    buildProjectFormData,
     handleProjectFormChange,
     handleProjectFormSubmit,
     resetProjectFormData,
     removeFormErrors,
+    removeProject,
   } = props;
 
   return (
@@ -44,7 +48,17 @@ export const Projects: FC<ProjectsProps> = props => {
           removeFormErrors={removeFormErrors} />
         {projects.length > 0 ? (
           projects.map(project => (
-            <ProjectCard projectData={project} key={project.id} />
+            <ProjectCard
+              projectData={project}
+              projectFormData={projectFormData}
+              formErrors={formErrors}
+              buildProjectFormData={buildProjectFormData}
+              handleProjectFormChange={handleProjectFormChange}
+              handleProjectFormSubmit={handleProjectFormSubmit}
+              resetProjectFormData={resetProjectFormData}
+              removeFormErrors={removeFormErrors}
+              removeProject={removeProject}
+              key={project.id} />
           ))
         ) : null}
       </StyldProjectCardsWrapper>

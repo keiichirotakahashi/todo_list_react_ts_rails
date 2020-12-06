@@ -10,7 +10,7 @@ interface ProjectNewCardProps {
   projectFormData: ProjectFormDataType;
   formErrors: string[];
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  handleProjectFormSubmit: (id?: number) => (event: FormEvent) => void;
   resetProjectFormData: () => void;
   removeFormErrors: () => void;
 }
@@ -24,7 +24,7 @@ export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
     resetProjectFormData,
     removeFormErrors,
   } = props;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleClickNew = () => {
     setIsModalOpen(true);

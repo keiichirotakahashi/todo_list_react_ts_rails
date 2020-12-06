@@ -8,16 +8,18 @@ import { ProjectFormDataType } from '../pages/TopPage';
 import styled from 'styled-components';
 
 interface ProjectFormProps {
+  id?: number,
   formName: string;
   buttonText: string;
   projectFormData: ProjectFormDataType;
   formErrors: string[];
   handleProjectFormChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  handleProjectFormSubmit: (id?: number) => (event: FormEvent) => void;
 }
 
 export const ProjectForm: FC<ProjectFormProps> = props => {
   const {
+    id,
     formName,
     buttonText,
     projectFormData,
@@ -33,7 +35,7 @@ export const ProjectForm: FC<ProjectFormProps> = props => {
         {formName}
       </StyledTxt>
       <FormErrors formErrors={formErrors} />
-      <Form handleProjectFormSubmit={handleProjectFormSubmit}>
+      <Form id={id} handleProjectFormSubmit={handleProjectFormSubmit}>
         <FormContent>
           <FormItemWrapper>
             <FormItem

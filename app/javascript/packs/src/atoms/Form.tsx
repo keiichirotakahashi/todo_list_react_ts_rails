@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 interface FormProps {
   children: React.ReactNode;
-  handleProjectFormSubmit: (event: FormEvent, id?: number) => void;
+  id?: number;
+  handleProjectFormSubmit: (id?: number) => (event: FormEvent) => void;
 }
 
 export const Form: FC<FormProps> = props => {
-  const { children, handleProjectFormSubmit } = props;
+  const { children, id, handleProjectFormSubmit } = props;
 
   return (
-    <StyledForm onSubmit={handleProjectFormSubmit}>{children}</StyledForm>
+    <StyledForm onSubmit={handleProjectFormSubmit(id)}>{children}</StyledForm>
   );
 };
 

@@ -62,11 +62,11 @@ export const TopPage: FC<TopPageProps> = props => {
     setProjectFormData({ ...projectFormData, [name]: value });
   };
 
-  const handleProjectFormSubmit = (event: FormEvent, id?: number) => {
+  const handleProjectFormSubmit = (id?: number) => (event: FormEvent) => {
     event.preventDefault();
     setFormErrors(initialFormErrors);
     removeFlashNow();
-    if (id) return;
+    if (id) return patchProject(id);
     postProject();
   };
 
@@ -99,12 +99,74 @@ export const TopPage: FC<TopPageProps> = props => {
     }
   };
 
+  const buildProjectFormData = async (url: string) => {
+    removeFlashNow();
+
+    try {
+      const response = await fetch(`/api/v1/projects/${url}`);
+      const project: ProjectType = await response.json();
+      setProjectFormData({ name: project.name, url: project.url });
+    } catch (error) {
+      showErrorFlash();
+    }
+  }
+
+  const patchProject = async (id: number) => {
+    try {
+      const response = await fetch(`/api/v1/projects/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ project: projectFormData })
+      });
+
+      if (response.ok) {
+        const updatedProject: ProjectType = await response.json();
+        setProjects(projects.map(project => {
+          if (project.id === updatedProject.id) return updatedProject;
+
+          return project;
+        }));
+        showNoticeFlash('プロジェクトを更新しました。');
+
+        return;
+      }
+
+      const errorMessages = await response.json();
+      setFormErrors(errorMessages);
+      showErrorFlash('プロジェクトの更新に失敗しました。');
+    } catch (error) {
+      showErrorFlash();
+    }
+  };
+
   const resetProjectFormData = () => {
     setProjectFormData(initialProjectFormData);
   };
 
   const removeFormErrors = () => {
     setFormErrors(initialFormErrors);
+  };
+
+  const removeProject = async (id: number) => {
+    removeFlashNow();
+
+    try {
+      const response = await fetch(`/api/v1/projects/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': csrfToken },
+      });
+
+      const deletedProject: ProjectType = await response.json();
+      setProjects(projects.filter(project => {
+        return project.id !== deletedProject.id;
+      }));
+      showNoticeFlash('プロジェクトを削除しました。');
+    } catch (error) {
+      showErrorFlash();
+    }
   };
 
   return (
@@ -119,10 +181,12 @@ export const TopPage: FC<TopPageProps> = props => {
             projects={projects}
             projectFormData={projectFormData}
             formErrors={formErrors}
+            buildProjectFormData={buildProjectFormData}
             handleProjectFormChange={handleProjectFormChange}
             handleProjectFormSubmit={handleProjectFormSubmit}
             resetProjectFormData={resetProjectFormData}
-            removeFormErrors={removeFormErrors} />
+            removeFormErrors={removeFormErrors}
+            removeProject={removeProject} />
         </Content>
       </Wrapper>
       <Footer />

@@ -119,7 +119,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
     end
   end
 
-  describe 'Patch /api/v1/projects/:url' do
+  describe 'Patch /api/v1/projects/:id' do
     context 'as an authenticated user' do
       before { sign_in user }
 
@@ -129,7 +129,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
         let(:user_id_attribute) { user.id }
 
         it 'updates a project' do
-          patch "/api/v1/projects/#{default_project.url}", params: { project: project_attributes }
+          patch "/api/v1/projects/#{default_project.id}", params: { project: project_attributes }
           expect(response).to have_http_status 200
           default_project.reload
           expect(default_project.name).to eq '新しいテストプロジェクト'
@@ -138,7 +138,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
 
       context 'when attributes are not valid' do
         subject do
-          patch "/api/v1/projects/#{default_project.url}", params: { project: project_attributes }
+          patch "/api/v1/projects/#{default_project.id}", params: { project: project_attributes }
           response
         end
 
@@ -154,7 +154,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
       before { sign_in another_user }
 
       subject do
-        patch "/api/v1/projects/#{default_project.url}", params: { project: project_attributes }
+        patch "/api/v1/projects/#{default_project.id}", params: { project: project_attributes }
         response
       end
 
@@ -167,7 +167,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
 
     context 'as a guest' do
       subject do
-        patch "/api/v1/projects/#{default_project.url}", params: { project: project_attributes }
+        patch "/api/v1/projects/#{default_project.id}", params: { project: project_attributes }
         response
       end
 
@@ -187,7 +187,7 @@ RSpec.describe 'Api::V1::Projects', type: :request do
       end
 
       it 'deletes a project' do
-        expect { delete "/api/v1/projects/#{default_project.url}" }.to change(Project, :count).by -1
+        expect { delete "/api/v1/projects/#{default_project.id}" }.to change(Project, :count).by -1
         expect(response).to have_http_status 200
       end
     end
@@ -199,16 +199,16 @@ RSpec.describe 'Api::V1::Projects', type: :request do
       end
 
       it 'does not delete a project' do
-        expect { delete "/api/v1/projects/#{default_project.url}" }.to change(Project, :count).by 0
+        expect { delete "/api/v1/projects/#{default_project.id}" }.to change(Project, :count).by 0
         expect(response).to have_http_status 403
       end
     end
 
     context 'as a guest' do
-       before { default_project }
+      before { default_project }
 
       it 'does not delete a project' do
-        expect { delete "/api/v1/projects/#{default_project.url}" }.to change(Project, :count).by 0
+        expect { delete "/api/v1/projects/#{default_project.id}" }.to change(Project, :count).by 0
         expect(response).to have_http_status 401
       end
     end

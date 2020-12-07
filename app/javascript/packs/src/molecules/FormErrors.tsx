@@ -7,7 +7,7 @@ interface FormErrorsProps {
 }
 
 export const FormErrors: FC<FormErrorsProps> = props => {
-  const formErrors = props.formErrors;
+  const { formErrors } = props;
 
   return (
     <>

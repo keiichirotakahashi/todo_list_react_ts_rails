@@ -15,7 +15,7 @@ interface ProjectPageProps {
 export const ProjectPage: FC<ProjectPageProps> = props => {
   const { flash, showErrorFlash } = props;
   const { url } = useParams<{url: string}>();
-  const [projectName, setProjectName] = useState('');
+  const [projectName, setProjectName] = useState<string>('');
 
   useEffect(() => {
     let unmounted = false;
@@ -23,8 +23,8 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     const getProject = async () => {
       try {
         const response = await fetch(`/api/v1/projects/${url}`);
-        const json = await response.json();
-        if (!unmounted) setProjectName(json.name);
+        const project = await response.json();
+        if (!unmounted) setProjectName(project.name);
       } catch (error) {
         showErrorFlash();
       }

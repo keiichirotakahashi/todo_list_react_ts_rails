@@ -14,7 +14,7 @@ export const Menu: FC<MenuProps> = props => {
   return (
     <Wrapper>
       <TxtWrapper
-        onClick={() => {handleClickEditProject()}}>
+        onClick={handleClickEditProject}>
         <StyledTxt>編集</StyledTxt>
       </TxtWrapper>
       <TxtWrapper

@@ -10,8 +10,10 @@ interface CloseProps {
 }
 
 export const Close: FC<CloseProps> = props => {
+  const { handleClickModalClose } = props;
+
   return (
-    <StyledClose onClick={() => {props.handleClickModalClose()}}>
+    <StyledClose onClick={handleClickModalClose}>
       <Img src={IconClose} alt='icon_close' />
     </StyledClose>
   );

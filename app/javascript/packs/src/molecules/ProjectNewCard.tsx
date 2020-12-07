@@ -26,7 +26,7 @@ export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
   } = props;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleClickNew = () => {
+  const handleClickNewProject = () => {
     setIsModalOpen(true);
   };
 
@@ -38,7 +38,7 @@ export const ProjectNewCard: FC<ProjectNewCardProps> = props => {
 
   return (
     <Card>
-      <Content onClick={() => {handleClickNew()}}>
+      <Content onClick={handleClickNewProject}>
         <H2>新規作成</H2>
       </Content>
       {isModalOpen ? (

@@ -19,6 +19,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Task < ApplicationRecord
+  belongs_to :project
+  has_one :user, through: :project
+
   validates :name, length: { minimum: 1, maximum: 255 }
   validates :due_on, presence: true
   validates :status, inclusion: { in: Task.statuses.keys }

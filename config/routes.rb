@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       resources :projects, only: %i[index create update destroy]
-      resources :projects, param: :url, only: %i[show]
+      resources :projects, param: :url, only: %i[show] do
+        resources :tasks, only: %i[index show create update destroy]
+      end
     end
   end
 

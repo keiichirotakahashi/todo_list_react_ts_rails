@@ -24,7 +24,7 @@ class Task < ApplicationRecord
 
   validates :name, length: { minimum: 1, maximum: 255 }
   validates :due_on, presence: true
-  validates :status, inclusion: { in: Task.statuses.keys }
+  validates :status, inclusion: { in: %w[todo doing done] }
 
   enum status: { todo: 1, doing: 2, done: 3 }
 end

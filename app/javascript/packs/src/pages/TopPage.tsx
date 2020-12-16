@@ -44,8 +44,8 @@ export const TopPage: FC<TopPageProps> = props => {
     const getProjects = async () => {
       try {
         const response = await fetch('/api/v1/projects');
-        const json = await response.json();
-        if (!unmounted) setProjects(json);
+        const projects: ProjectType[] = await response.json();
+        if (!unmounted) setProjects(projects);
       } catch(error) {
         showErrorFlash();
       }

@@ -4,8 +4,18 @@ import { useParams } from 'react-router-dom';
 import { Header } from '../organisms/Header';
 import { Footer } from '../organisms/Footer';
 import { Flash } from '../molecules/Flash';
-import { H1 } from '../atoms/Heading';
+import { Tasks } from '../organisms/Tasks';
 import styled from 'styled-components';
+
+export interface TaskType {
+  id: number;
+  name: string;
+  due_on: Date;
+  status: 'todo' | 'doing' | 'done';
+  project_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
 
 interface ProjectPageProps {
   flash: FlashType;
@@ -16,6 +26,7 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
   const { flash, showErrorFlash } = props;
   const { url } = useParams<{url: string}>();
   const [projectName, setProjectName] = useState<string>('');
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     let unmounted = false;
@@ -31,6 +42,17 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     };
     getProject();
 
+    const getTasks = async () => {
+      try {
+        const response = await fetch(`/api/v1/projects/${url}/tasks`);
+        const tasks: TaskType[] = await response.json();
+        if (!unmounted) setTasks(tasks);
+      } catch (error) {
+        showErrorFlash();
+      }
+    };
+    getTasks();
+
     const cleanup = () => { unmounted = true };
 
     return cleanup;
@@ -44,9 +66,9 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
           {flash.message}
         </Flash>
         <Content>
-          <H1>
-            {projectName}
-          </H1>
+          <Tasks
+            projectName={projectName}
+            tasks={tasks} />
         </Content>
       </Wrapper>
       <Footer />

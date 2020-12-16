@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 interface BtnProps {
   children: React.ReactNode;
+  className?: string;
 }
 
 export const Btn: FC<BtnProps> = props => {
-  const { children } = props;
+  const { children, className } = props;
 
   return (
-    <StyledBtn>{children}</StyledBtn>
+    <StyledBtn className={className}>{children}</StyledBtn>
   );
 };
 

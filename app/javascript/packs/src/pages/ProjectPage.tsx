@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { FlashType } from '../App';
 import { useParams } from 'react-router-dom';
 import { Header } from '../organisms/Header';
@@ -10,23 +10,40 @@ import styled from 'styled-components';
 export interface TaskType {
   id: number;
   name: string;
-  due_on: Date;
+  due_on: string;
   status: 'todo' | 'doing' | 'done';
   project_id: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TaskFormDataType {
+  name: string;
+  due_on: string;
+  status: 'todo' | 'doing' | 'done';
 }
 
 interface ProjectPageProps {
   flash: FlashType;
+  showNoticeFlash: (message: string) => void;
   showErrorFlash: (message?: string) => void;
+  removeFlashNow: () => void;
 }
 
 export const ProjectPage: FC<ProjectPageProps> = props => {
-  const { flash, showErrorFlash } = props;
+  const { flash, showNoticeFlash, showErrorFlash, removeFlashNow } = props;
   const { url } = useParams<{url: string}>();
   const [projectName, setProjectName] = useState<string>('');
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const initialTaskFormData: TaskFormDataType = {
+    name: '',
+    due_on: '',
+    status: 'todo',
+  };
+  const [taskFormData, setTaskFormData] = useState<TaskFormDataType>(initialTaskFormData);
+  const initialFormErrors: string[] = [];
+  const [formErrors, setFormErrors] = useState<string[]>(initialFormErrors);
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   useEffect(() => {
     let unmounted = false;
@@ -58,6 +75,72 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     return cleanup;
   }, []);
 
+  const handleTaskFormChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setTaskFormData({ ...taskFormData, [name]: value });
+  };
+
+  const handleTaskFormSubmit =(id?: number) => (event: FormEvent) => {
+    event.preventDefault();
+    setFormErrors(initialFormErrors);
+    removeFlashNow();
+    if (id) return patchTask(id);
+  };
+
+  const buildTaskFormData = async (id: number) => {
+    removeFlashNow();
+
+    try {
+      const response = await fetch(`/api/v1/projects/${url}/tasks/${id}`);
+      const task = await response.json();
+      setTaskFormData({
+        name: task.name,
+        due_on: task.due_on,
+        status: task.status,
+      });
+    } catch (error) {
+      showErrorFlash();
+    }
+  };
+
+  const patchTask = async (id: number) => {
+    try {
+      const response = await fetch(`/api/v1/projects/${url}/tasks/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ task: taskFormData }),
+      });
+      if (response.ok) {
+        const updatedTask: TaskType = await response.json();
+        setTasks(tasks.map(task => {
+          if (task.id === updatedTask.id) return updatedTask;
+
+          return task;
+        }));
+        showNoticeFlash('タスクを更新しました。');
+
+        return;
+      }
+
+      const errorMessages = await response.json();
+      setFormErrors(errorMessages);
+      showErrorFlash('タスクの更新に失敗しました');
+    } catch (error) {
+      showErrorFlash();
+    }
+  };
+
+  const resetTaskFormData = () => {
+    setTaskFormData(initialTaskFormData);
+  };
+
+  const removeFormErrors = () => {
+    setFormErrors(initialFormErrors);
+  };
+
   return (
     <>
       <Header />
@@ -68,7 +151,14 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
         <Content>
           <Tasks
             projectName={projectName}
-            tasks={tasks} />
+            tasks={tasks}
+            taskFormData={taskFormData}
+            formErrors={formErrors}
+            buildTaskFormData={buildTaskFormData}
+            handleTaskFormChange={handleTaskFormChange}
+            handleTaskFormSubmit={handleTaskFormSubmit}
+            resetTaskFormData={resetTaskFormData}
+            removeFormErrors={removeFormErrors} />
         </Content>
       </Wrapper>
       <Footer />

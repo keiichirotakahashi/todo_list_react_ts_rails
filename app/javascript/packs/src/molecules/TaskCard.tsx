@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useState, ChangeEvent, FormEvent } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { TaskType } from '../pages/ProjectPage';
@@ -7,33 +7,66 @@ import { H2 } from '../atoms/Heading';
 import { ValueWithLabel } from '../molecules/ValueWithLabel';
 import { Tag } from '../atoms/Tag';
 import { Btn } from '../atoms/Btn';
+import { Modal } from '../molecules/Modal';
+import { TaskForm } from '../molecules/TaskForm';
+import { TaskFormDataType } from '../pages/ProjectPage';
 import styled from 'styled-components';
 
 dayjs.locale('ja');
 
+interface StatusesType {
+  todo: string;
+  doing: string;
+  done: string;
+}
+
+export const STATUSES: StatusesType = {
+  todo: '未完了',
+  doing: '進行中',
+  done: '完了',
+};
+
 interface TaskCardProps {
   taskData: TaskType;
+  taskFormData: TaskFormDataType;
+  formErrors: string[];
+  buildTaskFormData: (id: number) => void;
+  handleTaskFormChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
+  handleTaskFormSubmit: (id?: number) => (event: FormEvent) => void;
+  resetTaskFormData: () => void;
+  removeFormErrors: () => void;
 }
 
 export const TaskCard: FC<TaskCardProps> = props => {
-  const { taskData } = props;
+  const {
+    taskData,
+    taskFormData,
+    formErrors,
+    buildTaskFormData,
+    handleTaskFormChange,
+    handleTaskFormSubmit,
+    resetTaskFormData,
+    removeFormErrors,
+  } = props;
   const id: number = taskData.id;
   const name: string = taskData.name;
-  const dueOn: Date = taskData.due_on;
+  const dueOn: string = taskData.due_on;
   const formattedDueOn: string = dayjs(dueOn).format('YYYY/MM/DD');
-  const createdAt: Date = taskData.created_at;
+  const createdAt: string = taskData.created_at;
   const formattedCreatedAt: string = dayjs(createdAt).format('YYYY/MM/DD');
   const status: 'todo' | 'doing' | 'done' = taskData.status;
-  const translatedStatus = useMemo(() => {
-    switch (status) {
-      case 'todo':
-        return '未完了';
-      case 'doing':
-        return '進行中'
-      case 'done':
-        return '完了';
-    }
-  }, [status]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleClickEditTask = () => {
+    setIsModalOpen(true);
+    buildTaskFormData(id);
+  };
+
+  const handleClickModalClose = () => {
+    setIsModalOpen(false);
+    resetTaskFormData();
+    removeFormErrors();
+  };
 
   return (
     <RoundedRectangleCard>
@@ -48,11 +81,11 @@ export const TaskCard: FC<TaskCardProps> = props => {
         <Action>
           <TagWrapper>
             <StyledTag status={status}>
-              {translatedStatus}
+              {STATUSES[status]}
             </StyledTag>
           </TagWrapper>
           <ButtonsWrapper>
-            <StyledBtn>
+            <StyledBtn onClick={handleClickEditTask}>
               編集
             </StyledBtn>
             <StyledBtn>
@@ -61,6 +94,20 @@ export const TaskCard: FC<TaskCardProps> = props => {
           </ButtonsWrapper>
         </Action>
       </Content>
+      {
+        isModalOpen ? (
+          <Modal handleClickModalClose={handleClickModalClose}>
+            <TaskForm
+              id={id}
+              formName='タスクを更新する'
+              buttonText='保存'
+              taskFormData={taskFormData}
+              formErrors={formErrors}
+              handleTaskFormChange={handleTaskFormChange}
+              handleTaskFormSubmit={handleTaskFormSubmit} />
+          </Modal>
+        ) : null
+      }
     </RoundedRectangleCard>
   );
 };

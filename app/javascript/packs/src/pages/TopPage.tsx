@@ -10,8 +10,8 @@ export interface ProjectType {
   id: number;
   name: string;
   url: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ProjectFormDataType {
@@ -119,7 +119,7 @@ export const TopPage: FC<TopPageProps> = props => {
           'Content-Type': 'application/json; charset=utf-8',
           'X-CSRF-Token': csrfToken,
         },
-        body: JSON.stringify({ project: projectFormData })
+        body: JSON.stringify({ project: projectFormData }),
       });
 
       if (response.ok) {

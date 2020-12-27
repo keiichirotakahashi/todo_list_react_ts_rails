@@ -21,4 +21,5 @@ const StyledModalBg = styled.div`
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
+  cursor: initial;
 `;

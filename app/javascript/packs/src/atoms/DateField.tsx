@@ -1,19 +1,19 @@
 import React, { FC, ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-interface TextFieldProps {
+interface DateFieldProps {
   fieldName: string;
   fieldValue: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }
 
-export const TextField: FC<TextFieldProps> = props => {
+export const DateField : FC<DateFieldProps> = props => {
   const { fieldName, fieldValue, onChange, className } = props;
 
   return (
-    <StyledTextField
-      type='text'
+    <StyledDateField
+      type='date'
       name={fieldName}
       value={fieldValue}
       onChange={onChange}
@@ -21,7 +21,7 @@ export const TextField: FC<TextFieldProps> = props => {
   );
 };
 
-const StyledTextField = styled.input`
+const StyledDateField = styled.input`
   font-size: 16px;
   border: solid 1px #dbdbdb;
   border-radius: 5px;

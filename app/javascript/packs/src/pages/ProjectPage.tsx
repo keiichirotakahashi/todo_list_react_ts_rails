@@ -40,8 +40,10 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     due_on: '',
     status: 'todo',
   };
+  const [newTaskFormData, setNewTaskFormData] = useState<TaskFormDataType>(initialTaskFormData);
   const [taskFormData, setTaskFormData] = useState<TaskFormDataType>(initialTaskFormData);
   const initialFormErrors: string[] = [];
+  const [newFormErrors, setNewFormErrors] = useState<string[]>(initialFormErrors);
   const [formErrors, setFormErrors] = useState<string[]>(initialFormErrors);
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -75,16 +77,45 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     return cleanup;
   }, []);
 
-  const handleTaskFormChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+  const handleNewTaskFormChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setTaskFormData({ ...taskFormData, [name]: value });
+    setNewTaskFormData({ ...newTaskFormData, [name]: value });
   };
 
-  const handleTaskFormSubmit =(id?: number) => (event: FormEvent) => {
+  const handleTaskFormSubmit = (id?: number) => (event: FormEvent) => {
     event.preventDefault();
     setFormErrors(initialFormErrors);
     removeFlashNow();
     if (id) return patchTask(id);
+    postTask();
+  };
+
+  const postTask = async () => {
+    setFormErrors(initialFormErrors);
+    try {
+      const response = await fetch(`/api/v1/projects/${url}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ task: newTaskFormData }),
+      });
+      if (response.ok) {
+        const newTask = await response.json();
+        tasks.unshift(newTask);
+        setTasks(tasks);
+        setNewTaskFormData(initialTaskFormData);
+        showNoticeFlash('タスクを作成しました。');
+
+        return;
+      }
+      const errorMessages = await response.json();
+      setNewFormErrors(errorMessages);
+      showErrorFlash('タスクの作成に失敗しました。');
+    } catch (error) {
+      showErrorFlash();
+    }
   };
 
   const buildTaskFormData = async (id: number) => {
@@ -101,6 +132,11 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     } catch (error) {
       showErrorFlash();
     }
+  };
+
+  const handleTaskFormChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setTaskFormData({ ...taskFormData, [name]: value });
   };
 
   const patchTask = async (id: number) => {
@@ -152,10 +188,13 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
           <Tasks
             projectName={projectName}
             tasks={tasks}
+            newTaskFormData={newTaskFormData}
             taskFormData={taskFormData}
+            newFormErrors={newFormErrors}
             formErrors={formErrors}
             buildTaskFormData={buildTaskFormData}
             handleTaskFormChange={handleTaskFormChange}
+            handleNewTaskFormChange={handleNewTaskFormChange}
             handleTaskFormSubmit={handleTaskFormSubmit}
             resetTaskFormData={resetTaskFormData}
             removeFormErrors={removeFormErrors} />

@@ -19,6 +19,7 @@ interface TasksProps {
   handleTaskFormSubmit: (id?: number) => (event: FormEvent) => void;
   resetTaskFormData: () => void;
   removeFormErrors: () => void;
+  removeTask: (id: number) => void;
 }
 
 export const Tasks: FC<TasksProps> = props => {
@@ -35,6 +36,7 @@ export const Tasks: FC<TasksProps> = props => {
     handleTaskFormSubmit,
     resetTaskFormData,
     removeFormErrors,
+    removeTask,
   } = props;
 
   return (
@@ -62,6 +64,7 @@ export const Tasks: FC<TasksProps> = props => {
                 handleTaskFormSubmit={handleTaskFormSubmit}
                 resetTaskFormData={resetTaskFormData}
                 removeFormErrors={removeFormErrors}
+                removeTask={removeTask}
                 key={task.id} />
             ))
           ) : null

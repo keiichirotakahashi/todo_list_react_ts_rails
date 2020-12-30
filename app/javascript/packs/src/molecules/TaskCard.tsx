@@ -35,6 +35,7 @@ interface TaskCardProps {
   handleTaskFormSubmit: (id?: number) => (event: FormEvent) => void;
   resetTaskFormData: () => void;
   removeFormErrors: () => void;
+  removeTask: (id: number) => void;
 }
 
 export const TaskCard: FC<TaskCardProps> = props => {
@@ -47,6 +48,7 @@ export const TaskCard: FC<TaskCardProps> = props => {
     handleTaskFormSubmit,
     resetTaskFormData,
     removeFormErrors,
+    removeTask,
   } = props;
   const id: number = taskData.id;
   const name: string = taskData.name;
@@ -88,7 +90,7 @@ export const TaskCard: FC<TaskCardProps> = props => {
             <StyledBtn onClick={handleClickEditTask}>
               編集
             </StyledBtn>
-            <StyledBtn>
+            <StyledBtn onClick={() => removeTask(id)}>
               削除
             </StyledBtn>
           </ButtonsWrapper>

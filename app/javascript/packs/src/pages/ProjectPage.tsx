@@ -177,6 +177,24 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
     setFormErrors(initialFormErrors);
   };
 
+  const removeTask = async (id) => {
+    removeFlashNow();
+
+    try {
+      const response = await fetch(`/api/v1/projects/${url}/tasks/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': csrfToken },
+      });
+      const deletedTask = await response.json();
+      setTasks(tasks.filter(task => {
+        return task.id !== deletedTask.id;
+      }));
+      showNoticeFlash('タスクを削除しました。');
+    } catch (error) {
+      showErrorFlash();
+    }
+  };
+
   return (
     <>
       <Header />
@@ -197,7 +215,8 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
             handleNewTaskFormChange={handleNewTaskFormChange}
             handleTaskFormSubmit={handleTaskFormSubmit}
             resetTaskFormData={resetTaskFormData}
-            removeFormErrors={removeFormErrors} />
+            removeFormErrors={removeFormErrors}
+            removeTask={removeTask} />
         </Content>
       </Wrapper>
       <Footer />

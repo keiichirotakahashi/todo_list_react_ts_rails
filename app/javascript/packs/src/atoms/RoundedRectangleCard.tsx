@@ -8,9 +8,7 @@ interface RoundedRectangleCardProps {
 export const RoundedRectangleCard: FC<RoundedRectangleCardProps> = props => {
   const { children } = props;
 
-  return (
-    <StyledRoundedRectangleCard>{children}</StyledRoundedRectangleCard>
-  );
+  return <StyledRoundedRectangleCard>{children}</StyledRoundedRectangleCard>;
 };
 
 const StyledRoundedRectangleCard = styled.div`

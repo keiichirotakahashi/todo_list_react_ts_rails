@@ -49,7 +49,6 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
 
   useEffect(() => {
     let unmounted = false;
-
     const getProject = async () => {
       try {
         const response = await fetch(`/api/v1/projects/${url}`);
@@ -60,7 +59,6 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
       }
     };
     getProject();
-
     const getTasks = async () => {
       try {
         const response = await fetch(`/api/v1/projects/${url}/tasks`);
@@ -71,7 +69,6 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
       }
     };
     getTasks();
-
     const cleanup = () => { unmounted = true };
 
     return cleanup;
@@ -120,7 +117,6 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
 
   const buildTaskFormData = async (id: number) => {
     removeFlashNow();
-
     try {
       const response = await fetch(`/api/v1/projects/${url}/tasks/${id}`);
       const task = await response.json();
@@ -179,7 +175,6 @@ export const ProjectPage: FC<ProjectPageProps> = props => {
 
   const removeTask = async (id) => {
     removeFlashNow();
-
     try {
       const response = await fetch(`/api/v1/projects/${url}/tasks/${id}`, {
         method: 'DELETE',

@@ -9,11 +9,7 @@ interface HeadingProps {
 export const H1: FC<HeadingProps> = props => {
   const { children, className } = props;
 
-  return (
-    <StyledHeading1 className={className}>
-      {children}
-    </StyledHeading1>
-  );
+  return <StyledHeading1 className={className}>{children}</StyledHeading1>;
 };
 
 export const H2: FC<HeadingProps> = props => {

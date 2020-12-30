@@ -10,9 +10,7 @@ interface FormProps {
 export const Form: FC<FormProps> = props => {
   const { children, id, onSubmit } = props;
 
-  return (
-    <StyledForm onSubmit={onSubmit(id)}>{children}</StyledForm>
-  );
+  return <StyledForm onSubmit={onSubmit(id)}>{children}</StyledForm>;
 };
 
 const StyledForm = styled.form`

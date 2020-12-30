@@ -8,9 +8,5 @@ interface OptionProps {
 export const Option: FC<OptionProps> = props => {
   const { children, value } = props;
 
-  return (
-    <option value={value}>
-      {children}
-    </option>
-  );
+  return <option value={value}>{children}</option>;
 };

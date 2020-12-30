@@ -29,13 +29,10 @@ interface TopPageProps {
 export const TopPage: FC<TopPageProps> = props => {
   const { flash, showNoticeFlash, showErrorFlash, removeFlashNow } = props;
   const [projects, setProjects] = useState<ProjectType[]>([]);
-
   const initialProjectFormData: ProjectFormDataType = { name: '', url: '' };
   const [projectFormData, setProjectFormData] = useState<ProjectFormDataType>(initialProjectFormData);
-
   const initialFormErrors: string[] = [];
   const [formErrors, setFormErrors] = useState<string[]>(initialFormErrors);
-
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   useEffect(() => {

@@ -8,9 +8,7 @@ interface ModalBgProps {
 export const ModalBg: FC<ModalBgProps> = props => {
   const { children } = props;
 
-  return(
-    <StyledModalBg>{children}</StyledModalBg>
-  );
+  return <StyledModalBg>{children}</StyledModalBg>;
 };
 
 const StyledModalBg = styled.div`

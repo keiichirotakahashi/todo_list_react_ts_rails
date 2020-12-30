@@ -11,7 +11,9 @@ export const Btn: FC<BtnProps> = props => {
   const { children, onClick, className } = props;
 
   return (
-    <StyledBtn onClick={onClick} className={className}>{children}</StyledBtn>
+    <StyledBtn onClick={onClick} className={className}>
+      {children}
+    </StyledBtn>
   );
 };
 

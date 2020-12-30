@@ -8,9 +8,7 @@ interface CardProps {
 export const Card: FC<CardProps> = props => {
   const { children } = props;
 
-  return (
-    <StyledCard>{children}</StyledCard>
-  );
+  return <StyledCard>{children}</StyledCard>;
 };
 
 const StyledCard = styled.div`

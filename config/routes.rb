@@ -11,7 +11,6 @@ Rails.application.routes.draw do
 
   # User
   get '/app', to: 'app#index'
-  get '/app/*path', to: 'app#index'
   devise_for :users, skip: [:registrations, :sessions]
   devise_scope :user do
     get '/signup', to: 'users/registrations#new'

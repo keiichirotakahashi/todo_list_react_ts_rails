@@ -59,7 +59,7 @@ export const ProjectCard: FC<ProjectCardProps> = props => {
 
   return (
     <Card>
-      <StyledLink to={`/app/projects/${url}`}>
+      <StyledLink to={`/projects/${url}`}>
         <H2>{name}</H2>
       </StyledLink>
       <MoreWrapper>

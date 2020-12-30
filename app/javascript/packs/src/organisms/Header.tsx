@@ -7,7 +7,7 @@ export const Header: FC = () => {
     <StyledHeader>
       <StyledNavi>
         <h1>
-          <StyledLogoLink to='/app' replace>
+          <StyledLogoLink to='/' replace>
             ToDoリスト
           </StyledLogoLink>
         </h1>

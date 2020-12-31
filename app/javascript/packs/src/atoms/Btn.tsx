@@ -3,13 +3,17 @@ import styled from 'styled-components';
 
 interface BtnProps {
   children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
 }
 
 export const Btn: FC<BtnProps> = props => {
-  const { children } = props;
+  const { children, onClick, className } = props;
 
   return (
-    <StyledBtn>{children}</StyledBtn>
+    <StyledBtn onClick={onClick} className={className}>
+      {children}
+    </StyledBtn>
   );
 };
 

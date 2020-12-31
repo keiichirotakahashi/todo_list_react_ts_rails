@@ -10,8 +10,8 @@ export interface ProjectType {
   id: number;
   name: string;
   url: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ProjectFormDataType {
@@ -29,13 +29,10 @@ interface TopPageProps {
 export const TopPage: FC<TopPageProps> = props => {
   const { flash, showNoticeFlash, showErrorFlash, removeFlashNow } = props;
   const [projects, setProjects] = useState<ProjectType[]>([]);
-
   const initialProjectFormData: ProjectFormDataType = { name: '', url: '' };
   const [projectFormData, setProjectFormData] = useState<ProjectFormDataType>(initialProjectFormData);
-
   const initialFormErrors: string[] = [];
   const [formErrors, setFormErrors] = useState<string[]>(initialFormErrors);
-
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   useEffect(() => {
@@ -44,8 +41,8 @@ export const TopPage: FC<TopPageProps> = props => {
     const getProjects = async () => {
       try {
         const response = await fetch('/api/v1/projects');
-        const json = await response.json();
-        if (!unmounted) setProjects(json);
+        const projects: ProjectType[] = await response.json();
+        if (!unmounted) setProjects(projects);
       } catch(error) {
         showErrorFlash();
       }
@@ -119,7 +116,7 @@ export const TopPage: FC<TopPageProps> = props => {
           'Content-Type': 'application/json; charset=utf-8',
           'X-CSRF-Token': csrfToken,
         },
-        body: JSON.stringify({ project: projectFormData })
+        body: JSON.stringify({ project: projectFormData }),
       });
 
       if (response.ok) {

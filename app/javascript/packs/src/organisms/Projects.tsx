@@ -33,12 +33,12 @@ export const Projects: FC<ProjectsProps> = props => {
 
   return (
     <>
-      <StyldHeadingWrapper>
+      <StyledHeadingWrapper>
         <H1>
           プロジェクト一覧
         </H1>
-      </StyldHeadingWrapper>
-      <StyldProjectCardsWrapper>
+      </StyledHeadingWrapper>
+      <StyledProjectCardsWrapper>
         <ProjectNewCard
           projectFormData={projectFormData}
           formErrors={formErrors}
@@ -61,16 +61,16 @@ export const Projects: FC<ProjectsProps> = props => {
               key={project.id} />
           ))
         ) : null}
-      </StyldProjectCardsWrapper>
+      </StyledProjectCardsWrapper>
     </>
   );
 };
 
-const StyldHeadingWrapper = styled.div`
+const StyledHeadingWrapper = styled.div`
   margin-bottom: 16px;
 `;
 
-const StyldProjectCardsWrapper = styled.div`
+const StyledProjectCardsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 0 -15px;

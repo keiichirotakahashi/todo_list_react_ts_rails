@@ -3,6 +3,7 @@ import { Txt } from '../atoms/Txt';
 import { FormErrors } from '../molecules/FormErrors';
 import { Form } from '../atoms/Form';
 import { FormItem } from '../molecules/FormItem';
+import { TextField } from '../atoms/TextField';
 import { Btn } from '../atoms/Btn';
 import { ProjectFormDataType } from '../pages/TopPage';
 import styled from 'styled-components';
@@ -25,7 +26,7 @@ export const ProjectForm: FC<ProjectFormProps> = props => {
     projectFormData,
     formErrors,
     handleProjectFormChange,
-    handleProjectFormSubmit
+    handleProjectFormSubmit,
   } = props;
   const { name, url } = projectFormData;
 
@@ -35,28 +36,26 @@ export const ProjectForm: FC<ProjectFormProps> = props => {
         {formName}
       </StyledTxt>
       <FormErrors formErrors={formErrors} />
-      <Form id={id} handleProjectFormSubmit={handleProjectFormSubmit}>
-        <FormContent>
-          <FormItemWrapper>
-            <FormItem
-              label='プロジェクト名'
-              fieldType='text'
+      <Form id={id} onSubmit={handleProjectFormSubmit}>
+        <FormItemWrapper>
+          <FormItem label='プロジェクト名'>
+            <StyledTextField
               fieldName='name'
               fieldValue={name}
-              handleProjectFormChange={handleProjectFormChange} />
-            <FormItem
-              label='URL'
-              fieldType='text'
+              onChange={handleProjectFormChange} />
+          </FormItem>
+          <FormItem label='URL'>
+            <StyledTextField
               fieldName='url'
               fieldValue={url}
-              handleProjectFormChange={handleProjectFormChange} />
-          </FormItemWrapper>
-          <BtnWrapper>
-            <Btn>
-              {buttonText}
-            </Btn>
-          </BtnWrapper>
-        </FormContent>
+              onChange={handleProjectFormChange} />
+          </FormItem>
+        </FormItemWrapper>
+        <BtnWrapper>
+          <Btn>
+            {buttonText}
+          </Btn>
+        </BtnWrapper>
       </Form>
     </>
   );
@@ -67,18 +66,14 @@ const StyledTxt = styled(Txt)`
   margin-bottom: 12px;
 `;
 
-const FormContent = styled.div`
-  @media screen and (min-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-`;
-
 const FormItemWrapper = styled.div`
   @media screen and (min-width: 768px) {
     width: 78%;
   }
+`;
+
+const StyledTextField = styled(TextField)`
+  width: 95%;
 `;
 
 const BtnWrapper = styled.div`

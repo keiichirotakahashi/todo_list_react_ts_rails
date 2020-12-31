@@ -20,7 +20,7 @@ ja:
       task:
         id: ID
         project: プロジェクト
-        name: ToDo名
+        name: タスク名
         status: ステータス
         due_on: 期限
         created_at: 作成日時

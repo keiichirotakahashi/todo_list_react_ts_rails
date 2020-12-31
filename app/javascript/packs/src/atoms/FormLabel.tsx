@@ -9,7 +9,7 @@ interface FormLabelProps {
 export const FormLabel: FC<FormLabelProps> = props => {
   const { children, className } = props;
 
-  return (<StyledFormLabel className={className}>{children}</StyledFormLabel>);
+  return <StyledFormLabel className={className}>{children}</StyledFormLabel>;
 };
 
 const StyledFormLabel = styled.div`

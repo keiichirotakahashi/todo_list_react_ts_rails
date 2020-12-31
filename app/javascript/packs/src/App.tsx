@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { TopPage } from './pages/TopPage';
 import { ProjectPage } from './pages/ProjectPage';
 
@@ -58,17 +58,19 @@ const App: FC = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/app">
+        <Route exact path="/">
           <TopPage
             flash={flash}
             showNoticeFlash={showNoticeFlash}
             showErrorFlash={showErrorFlash}
             removeFlashNow={removeFlashNow} />
         </Route>
-        <Route exact path="/app/projects/:url">
+        <Route exact path="/projects/:url">
           <ProjectPage
             flash={flash}
-            showErrorFlash={showErrorFlash} />
+            showNoticeFlash={showNoticeFlash}
+            showErrorFlash={showErrorFlash}
+            removeFlashNow={removeFlashNow} />
         </Route>
       </Switch>
     </Router>

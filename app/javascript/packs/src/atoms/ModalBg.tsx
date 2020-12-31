@@ -8,9 +8,7 @@ interface ModalBgProps {
 export const ModalBg: FC<ModalBgProps> = props => {
   const { children } = props;
 
-  return(
-    <StyledModalBg>{children}</StyledModalBg>
-  );
+  return <StyledModalBg>{children}</StyledModalBg>;
 };
 
 const StyledModalBg = styled.div`
@@ -21,4 +19,5 @@ const StyledModalBg = styled.div`
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
+  cursor: initial;
 `;
